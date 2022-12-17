@@ -1,59 +1,69 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+	interface Despesa {
+		id?: string;
+		descricao: string;
+		valor: number;
+		vencimento: Date;
+		recebido: boolean;
+	}
+	let despesas = [
+		{
+			id: Math.random().toString(36).slice(2),
+			descricao: 'cemig',
+			valor: 400,
+			vencimento: new Date(2022, 11, 17),
+			recebido: true
+		}
+	];
+
+	let receitas = [
+		{
+			id: Math.random().toString(36).slice(2),
+			descricao: 'salario',
+			valor: 1200,
+			vencimento: new Date(2022, 11, 17),
+			recebido: false
+		}
+	];
+
+	const addDespesa = ({ descricao, valor, vencimento, recebido }: Despesa) => {
+		despesas = [
+			...despesas,
+			{
+				id: Math.random().toString(36).slice(2),
+				descricao,
+				valor,
+				vencimento,
+				recebido
+			}
+		];
+	};
+
+	const removerDespesa = (id: string) => {
+		despesas = despesas.filter((item) => item.id !== id);
+	};
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<h1>Receitas:</h1>
+<ul>
+	{#each receitas as receita}
+		<li>
+			{receita.descricao} -
+			{receita.valor} -
+			{receita.vencimento.toLocaleDateString()} -
+			{receita.recebido ? 'Recebido' : 'Pendente'}
+		</li>
+	{/each}
+</ul>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
+<h1>Despesas</h1>
+<ul>
+	{#each despesas as despesa}
+		<li>
+			{despesa.descricao} -
+			{despesa.valor} -
+			{despesa.vencimento.toLocaleDateString()} -
+			{despesa.recebido ? 'Pago' : 'Pendente'}
+		</li>
+	{/each}
+</ul>
