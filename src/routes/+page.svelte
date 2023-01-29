@@ -1,4 +1,6 @@
 <script lang="ts">
+	import AddTransaction from './addTransaction.svelte';
+
 	interface Despesa {
 		id?: string;
 		descricao: string;
@@ -43,6 +45,8 @@
 		despesas = despesas.filter((item) => item.id !== id);
 	};
 </script>
+
+<AddTransaction />
 
 <h1>Receitas:</h1>
 <ul>
