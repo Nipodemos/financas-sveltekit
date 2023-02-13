@@ -10,7 +10,7 @@
 	export let despesaParaAlterar = '';
 
 	let inputDescricao = '';
-	let inputValor = '';
+	let inputValor = 0;
 	let inputVencimento = new Date();
 	let inputRecebido = false;
 
