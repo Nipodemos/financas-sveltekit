@@ -1,3 +1,42 @@
+<script lang="ts">
+	interface Despesa {
+		id?: string;
+		descricao: string;
+		valor: number;
+		vencimento: Date;
+		recebido: boolean;
+	}
+	export let despesas: Despesa[] = [];
+	export let despesaParaAlterar = '';
+
+	let inputDescricao = '';
+	let inputValor = '';
+	let inputVencimento = new Date();
+	let inputRecebido = false;
+
+	const addDespesa = ({ descricao, valor, vencimento, recebido }: Despesa) => {
+		despesas = [
+			...despesas,
+			{
+				id: Math.random().toString(36).slice(2),
+				descricao,
+				valor,
+				vencimento,
+				recebido
+			}
+		];
+	};
+	$: if (despesaParaAlterar !== '') {
+		const despesa = despesas.find((item) => item.id === despesaParaAlterar);
+		if (despesa) {
+			inputDescricao = despesa.descricao;
+			inputValor = despesa.valor;
+			inputVencimento = despesa.vencimento;
+			inputRecebido = despesa.recebido;
+		}
+	}
+</script>
+
 <form style="display: flex; flex-direction: column">
 	Tipo:
 	<div style="display: flex">
