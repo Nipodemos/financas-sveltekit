@@ -13,7 +13,9 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
     "test:integration": "playwright test",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "surrealimport": " surreal import --conn http://127.0.0.1:8000 --ns test --db test --user root --pass root ./src/lib/database/database.surql ",
+    "surrealseed": "bun --bun ./src/lib/database/seed.ts"
   },
   "devDependencies": {
     "@mdi/js": "^7.4.47",
@@ -41,6 +43,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "surrealdb.js": "1.0.0-beta.9"
   }
 }
