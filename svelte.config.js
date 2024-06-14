@@ -13,6 +13,12 @@ const config = {
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: adapter(),
   },
+  onwarn(warning, defaultHandler) {
+    // Do not show 3rd party warnings
+    if (warning.filename.includes('node_modules')) return
+
+    defaultHandler(warning)
+  },
 };
 
 export default config;
