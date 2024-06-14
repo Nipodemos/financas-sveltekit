@@ -14,8 +14,9 @@
     "format": "prettier --plugin-search-dir . --write .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "surrealimport": " surreal import --conn http://127.0.0.1:8000 --ns test --db test --user root --pass root ./src/lib/database/database.surql ",
-    "surrealseed": "bun --bun ./src/lib/database/seed.ts"
+    "surrealimport": " surreal import --conn http://127.0.0.1:8000 --ns test --db financas --user root --pass root ./src/lib/database/database.surql ",
+    "surrealseed": "bun --bun ./src/lib/database/seed.ts",
+    "surrealstart": "surreal start file:C:\\surrealdbstorage --strict --auth"
   },
   "devDependencies": {
     "@mdi/js": "^7.4.47",
