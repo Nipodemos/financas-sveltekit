@@ -13,6 +13,9 @@
 	} from 'svelte-ux';
 
 	let modalDespesaIsLoading = false;
+	export let data;
+	const categoriasDeReceita = data.categoriasDeReceita;
+	const categoriasDeDespesa = data.categoriasDeDespesa;
 </script>
 
 <Card title="Lançamentos">
@@ -63,10 +66,9 @@
 								<select
 									class="text-sm w-full outline-none appearance-none cursor-pointer bg-surface-100"
 								>
-									<option value={1}>First</option>
-									<option value={2}>Second</option>
-									<option value={3}>Third</option>
-									<option value={4}>Fourth</option>
+									{#each categoriasDeDespesa as categoria}
+										<option value={categoria.id}>{categoria.nome}</option>
+									{/each}
 								</select>
 								<span slot="append">
 									<Icon data="https://api.iconify.design/ph/arrow-down.svg" />
