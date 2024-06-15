@@ -1,10 +1,23 @@
-DEFINE TABLE usuario SCHEMAFULL;
+DEFINE TABLE usuario SCHEMAFULL PERMISSIONS FOR select,update WHERE id = $auth.id;
 DEFINE FIELD nome ON usuario TYPE string ASSERT string::len($value) > 2;
 DEFINE FIELD email ON usuario TYPE string ASSERT string::len($value) > 2;
 DEFINE FIELD senha ON usuario TYPE string ASSERT string::len($value) > 2;
 DEFINE FIELD criadoEm ON usuario TYPE datetime VALUE $before OR time::now() DEFAULT time::now() READONLY;
 DEFINE FIELD canceladoEm ON usuario TYPE datetime | null DEFAULT null;
 DEFINE FIELD atualizadoEm ON usuario TYPE datetime VALUE time::now() DEFAULT time::now() READONLY;
+
+DEFINE SCOPE usuario
+  SESSION 14d
+  SIGNIN ( SELECT * FROM usuario WHERE email = $email AND crypto::argon2::compare(senha, $senha) )
+  SIGNUP ( 
+    CREATE user CONTENT {
+			nome: $nome,
+			email: $email,
+			password: crypto::argon2::generate($senha)
+		}
+  )
+;
+
 
 DEFINE TABLE categoria SCHEMAFULL;
 DEFINE FIELD nome ON categoria TYPE string ASSERT string::len($value) > 2;
