@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
-import db from '$lib/database/connection_administrador';
+import Surreal from 'surrealdb.js';
 
 const schema = z
 	.object({
@@ -18,7 +18,14 @@ const schema = z
 	});
 
 export const load: PageServerLoad = async () => {
-	const form = await superValidate(zod(schema));
+	const data = {
+		nome: 'alan',
+		email: 'a.lanzi@hotmail.com',
+		senha: '123',
+		confirmarSenha: '123'
+	};
+
+	const form = await superValidate(data, zod(schema));
 	return {
 		form
 	};
@@ -34,15 +41,21 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		// Do something with the form data
-		const signupToken = await db.signup({
+		const values = {
 			namespace: 'test',
 			database: 'financas',
 			scope: 'usuario',
 			nome: form.data.nome,
 			email: form.data.email,
 			senha: form.data.senha
-		});
+		};
+
+		console.log('values :>> ', values);
+		const db = new Surreal();
+		await db.connect('http://127.0.0.1:8000/rpc');
+		db.use({ namespace: 'test', database: 'financas' });
+		// Do something with the form data
+		const signupToken = await db.signup(values);
 
 		cookies.set('signupToken', signupToken, {
 			path: '/cadastrar_usuario',
