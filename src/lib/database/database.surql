@@ -1,6 +1,5 @@
 DEFINE TABLE usuario SCHEMAFULL PERMISSIONS 
-FOR select,update WHERE id = $auth.id
-FOR create FULL
+FOR select,update,create WHERE id = $auth.id
 FOR delete NONE
 ;
 DEFINE FIELD nome ON usuario TYPE string ASSERT string::len($value) > 2;
@@ -17,7 +16,7 @@ DEFINE SCOPE usuario
     CREATE usuario CONTENT {
 			nome: $nome,
 			email: $email,
-			password: crypto::argon2::generate($senha)
+			senha: crypto::argon2::generate($senha)
 		}
   )
 ;
@@ -90,21 +89,15 @@ DEFINE FIELD atualizadoEm ON cartaoDebitoTotalizador TYPE datetime VALUE time::n
 
 DEFINE INDEX cartaoDebito_mes_ano_unico ON cartaoDebitoTotalizador FIELDS cartaoDebito, mes, ano UNIQUE;
 
-DEFINE TABLE transacao SCHEMAFULL;
+DEFINE TABLE transacao SCHEMAFULL PERMISSIONS
+FOR select,create,update WHERE usuario = $auth.id
+FOR delete NONE;
 DEFINE FIELD tipoTransacao ON transacao TYPE string ASSERT $value INSIDE ['receita','despesa'];
 DEFINE FIELD tipoRepetir ON transacao TYPE string ASSERT $value INSIDE ['unica','parcelada','recorrente'];
 DEFINE FIELD descricao ON transacao TYPE string ASSERT string::len($value) > 2;
+DEFINE FIELD usuario ON transacao TYPE record<usuario> ASSERT $value != NONE;
 DEFINE FIELD valor ON transacao TYPE number ASSERT $value > 0;
 DEFINE FIELD data ON transacao TYPE datetime ASSERT type::is::datetime(type::datetime($value));
 DEFINE FIELD categoria ON transacao TYPE record<categoria> ASSERT $value != NONE;
-
-DEFINE TABLE transacaoParceladaDetalhes SCHEMAFULL;
-DEFINE FIELD transacao ON transacaoParceladaDetalhes TYPE record<transacao> ASSERT $value != NONE;
-DEFINE FIELD parcela ON transacaoParceladaDetalhes TYPE number ASSERT $value > 0;
-DEFINE FIELD totalParcelas ON transacaoParceladaDetalhes TYPE number ASSERT $value > 0;
-DEFINE FIELD criadoEm ON transacaoParceladaDetalhes TYPE datetime VALUE $before OR time::now() DEFAULT time::now() READONLY;
-DEFINE FIELD canceladoEm ON transacaoParceladaDetalhes TYPE datetime | null DEFAULT null;
-DEFINE FIELD atualizadoEm ON transacaoParceladaDetalhes TYPE datetime VALUE time::now() DEFAULT time::now() READONLY;
-
 
 
