@@ -3,6 +3,7 @@ const svelte_ux = require('svelte-ux/plugins/tailwind.cjs');
 
 /** @type {import('tailwindcss').Config}*/
 const config = {
+	darkMode: 'selector',
 	content: ['./src/**/*.{html,svelte}', './node_modules/svelte-ux/**/*.{svelte,js}'],
 	theme: {
 		extend: {}
