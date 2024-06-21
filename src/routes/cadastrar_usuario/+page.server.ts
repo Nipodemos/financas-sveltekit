@@ -1,4 +1,3 @@
-import { fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -18,14 +17,7 @@ const schema = z
 	});
 
 export const load: PageServerLoad = async () => {
-	const data = {
-		nome: 'alan',
-		email: 'a.lanzi@hotmail.com',
-		senha: '123',
-		confirmarSenha: '123'
-	};
-
-	const form = await superValidate(data, zod(schema));
+	const form = await superValidate(zod(schema));
 	return {
 		form
 	};
@@ -38,7 +30,7 @@ export const actions = {
 
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
-			return fail(400, { form });
+			return message(form, { tipo: 'fail', mensagem: 'Erro ao cadastrar usuário' });
 		}
 
 		const values = {
@@ -65,6 +57,6 @@ export const actions = {
 		});
 
 		// Display a success status message
-		return message(form, 'Form posted successfully!');
+		return message(form, { tipo: 'success', mensagem: 'Usuário cadastrado com sucesso' });
 	}
 };
