@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "surrealdb.js": "1.0.0-beta.9"
+    "surrealdb.js": "1.0.0-beta.9",
+    "tw-bootstrap-grid-optimizer": "^1.0.2"
   }
 }

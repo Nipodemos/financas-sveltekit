@@ -14,6 +14,9 @@ importers:
       surrealdb.js:
         specifier: 1.0.0-beta.9
         version: 1.0.0-beta.9
+      tw-bootstrap-grid-optimizer:
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
       '@mdi/js':
         specifier: ^7.4.47
@@ -1920,6 +1923,9 @@ packages:
 
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
+
+  tw-bootstrap-grid-optimizer@1.0.2:
+    resolution: {integrity: sha512-DhB1tJuajkNWe9JbK+dOOTTWKuqJetfYycecFEgtHNMi7kP4i1Xjn4pgKEZXb/lx7I0EocGmUFV2C90RzoCsOQ==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -3949,6 +3955,8 @@ snapshots:
     optional: true
 
   tslib@2.6.3: {}
+
+  tw-bootstrap-grid-optimizer@1.0.2: {}
 
   type-check@0.4.0:
     dependencies:
