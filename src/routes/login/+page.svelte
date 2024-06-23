@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Button, Card, Field } from 'svelte-ux';
-	import { type Infer, superForm } from 'sveltekit-superforms';
+	import { Button, Card, Field, TextField } from 'svelte-ux';
+	import { superForm } from 'sveltekit-superforms';
 
 	export let data;
 
@@ -10,12 +10,11 @@
 		onUpdated: ({ form }) => {
 			if (form.message) {
 				if (form.message.tipo == 'success') {
-					goto('/login');
+					goto('/dashboard');
 				}
 			}
 		}
 	});
-	$: console.log($submitting);
 </script>
 
 <Card>
@@ -23,20 +22,9 @@
 		<div class="row">
 			<div class="md:col-4"></div>
 			<div class="md:col-4">
-				<Card class="bg-surface-300 mt-4 shadow-2xl" title="Cadastrar Usuário">
+				<Card class="bg-surface-300 mt-4 shadow-2xl" title="Login">
 					<div slot="contents">
 						<form class="flex flex-col gap-2" use:enhance method="post">
-							<Field hint={$errors.nome?.join('<br>')} error={!!$errors.nome} label="Nome" let:id>
-								<input
-									{id}
-									type="text"
-									name="nome"
-									bind:value={$form.nome}
-									class="w-full outline-none bg-surface-100"
-									{...$constraints.nome}
-								/>
-							</Field>
-
 							<Field
 								hint={$errors.email?.join('<br>')}
 								error={!!$errors.email}
@@ -69,22 +57,6 @@
 								/>
 							</Field>
 
-							<Field
-								hint={$errors.confirmarSenha?.join('<br>')}
-								error={!!$errors.confirmarSenha}
-								label="Confirmar Senha"
-								let:id
-							>
-								<input
-									{id}
-									type="password"
-									name="confirmarSenha"
-									bind:value={$form.confirmarSenha}
-									class="w-full outline-none bg-surface-100"
-									{...$constraints.confirmarSenha}
-								/>
-							</Field>
-
 							<Button
 								loading={!!$submitting}
 								disabled={!!$submitting}
@@ -97,7 +69,7 @@
 						<div>
 							{#if $message}
 								<div class="text-center text-sm text-primary-500">
-									{$message.mensagem}
+									{$message}
 								</div>
 							{/if}
 						</div>

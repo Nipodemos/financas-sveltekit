@@ -2,19 +2,12 @@ import type { PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
-import { cadastrarUsuario } from '$lib/database/connection';
+import { logarUsuario } from '$lib/database/connection';
 
-const schema = z
-	.object({
-		nome: z.string(),
-		email: z.string(),
-		senha: z.string(),
-		confirmarSenha: z.string()
-	})
-	.refine((dados) => dados.senha === dados.confirmarSenha, {
-		message: 'As senhas não conferem',
-		path: ['confirmarSenha']
-	});
+const schema = z.object({
+	email: z.string(),
+	senha: z.string()
+});
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod(schema));
@@ -30,14 +23,10 @@ export const actions = {
 
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
-			return message(form, { tipo: 'fail', mensagem: 'Erro ao cadastrar usuário' });
+			return message(form, { tipo: 'fail', mensagem: 'Erro ao tentar fazer login' });
 		}
 
-		const retorno = await cadastrarUsuario(form.data.nome, form.data.email, form.data.senha);
-
-		if (retorno === 'existente') {
-			return message(form, { tipo: 'fail', mensagem: 'Usuário já cadastrado' });
-		}
+		const retorno = await logarUsuario(form.data.email, form.data.senha);
 
 		cookies.set('userToken', retorno, {
 			path: '/',
