@@ -45,7 +45,7 @@ export async function cadastrarUsuario(nome: string, email: string, senha: strin
 		password: process.env.SURREALDB_PASSWORD
 	});
 
-	const usuarioExistente = await db.query<[Usuario[]]>(
+	const [usuarioExistente] = await db.query<[Usuario[]]>(
 		'SELECT * FROM usuario WHERE email = $email',
 		{
 			email
