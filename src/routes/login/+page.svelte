@@ -10,7 +10,9 @@
 		onUpdated: ({ form }) => {
 			if (form.message) {
 				if (form.message.tipo == 'success') {
-					goto('/dashboard');
+					setTimeout(() => {
+						goto('/login');
+					}, 2000);
 				}
 			}
 		}
@@ -67,9 +69,9 @@
 							>
 						</form>
 						<div>
-							{#if $message}
+							{#if $message?.mensagem}
 								<div class="text-center text-sm text-primary-500">
-									{$message}
+									{$message.mensagem}
 								</div>
 							{/if}
 						</div>

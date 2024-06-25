@@ -10,7 +10,9 @@
 		onUpdated: ({ form }) => {
 			if (form.message) {
 				if (form.message.tipo == 'success') {
-					goto('/login');
+					setTimeout(() => {
+						goto('/login');
+					}, 2000);
 				}
 			}
 		}
