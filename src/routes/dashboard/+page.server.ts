@@ -3,15 +3,15 @@ import db from '$lib/database/connection';
 import type { Categoria } from '$lib/database/types';
 
 export const load: PageServerLoad = async () => {
-	const categorias = await db.query<Categoria[]>(
-		'SELECT * FROM categorias WHERE cancelado_em IS NULL ORDER BY nome ASC'
+	const [categorias] = await db.query<[Categoria[]]>(
+		'SELECT * FROM categoria WHERE cancelado_em IS NULL ORDER BY nome ASC'
 	);
 
 	const categoriasDeDespesa = categorias.filter(
-		(categoria) => categoria.tipo_categoria === 'despesa'
+		(categoria) => categoria.tipoCategoria === 'despesa'
 	);
 	const categoriasDeReceita = categorias.filter(
-		(categoria) => categoria.tipo_categoria === 'receita'
+		(categoria) => categoria.tipoCategoria === 'receita'
 	);
 
 	return {
